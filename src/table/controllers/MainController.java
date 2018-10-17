@@ -85,8 +85,8 @@ public class MainController{
     }
 
     @FXML
-    private void handleNewPerson() {
-        Employee tempEmployee = new Employee();
+    private void handleNewEmployee() {
+        Employee tempEmployee = new Employee("New employee",0,0);
         boolean okClicked = tableMainApp.showEmployeeEditDialog(tempEmployee);
         if (okClicked) {
             tableMainApp.getEmployeeData().add(tempEmployee);
@@ -94,7 +94,7 @@ public class MainController{
     }
 
     @FXML
-    private void handleEditPerson() {
+    private void handleEditEmployee() {
         Employee selectedEmployee = employeeTable.getSelectionModel().getSelectedItem();
         if (selectedEmployee != null) {
             boolean okClicked = tableMainApp.showEmployeeEditDialog(selectedEmployee);
