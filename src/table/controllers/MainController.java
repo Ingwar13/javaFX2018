@@ -49,8 +49,8 @@ public class MainController{
     private void showEmployeeDetails(Employee employee){
         if (employee != null){
             nameLabel.setText(employee.getName());
-            ageLabel.setText(Integer.toString(employee.getAge()));
-            salaryLabel.setText(Integer.toString(employee.getSalary()));
+            ageLabel.setText(employee.getAge().toString());
+            salaryLabel.setText(employee.getSalary().toString());
         } else {
             nameLabel.setText("");
             ageLabel.setText("");
@@ -69,6 +69,46 @@ public class MainController{
             alert.setTitle("No Selection");
             alert.setHeaderText("No Employee Selected");
             alert.setContentText("Please select an employee in the table.");
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
+    private void handleReadEmployee(){
+        int selectedIndex = employeeTable.getSelectionModel().getSelectedIndex();
+        if (selectedIndex >= 0){
+            Employee emp = employeeTable.getItems().get(selectedIndex);
+            nameLabel.setText(emp.getName());
+            ageLabel.setText(emp.getAge().toString());
+            salaryLabel.setText(emp.getSalary().toString());
+        }
+    }
+
+    @FXML
+    private void handleNewPerson() {
+        Employee tempEmployee = new Employee();
+        boolean okClicked = tableMainApp.showEmployeeEditDialog(tempEmployee);
+        if (okClicked) {
+            tableMainApp.getEmployeeData().add(tempEmployee);
+        }
+    }
+
+    @FXML
+    private void handleEditPerson() {
+        Employee selectedEmployee = employeeTable.getSelectionModel().getSelectedItem();
+        if (selectedEmployee != null) {
+            boolean okClicked = tableMainApp.showEmployeeEditDialog(selectedEmployee);
+            if (okClicked) {
+                showEmployeeDetails(selectedEmployee);
+            }
+
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.initOwner(tableMainApp.getPrimaryStage());
+            alert.setTitle("No Selection");
+            alert.setHeaderText("No Person Selected");
+            alert.setContentText("Please select a person in the table.");
+
             alert.showAndWait();
         }
     }

@@ -18,8 +18,8 @@ public class Employee {
         this.salary = new SimpleIntegerProperty(salary);
     }
 
-    public Employee(String name){
-        this.name = new SimpleStringProperty(name);
+    public Employee(){
+        this.name = null; //new SimpleStringProperty(name);
         this.age = null;
         this.salary = null;
     }

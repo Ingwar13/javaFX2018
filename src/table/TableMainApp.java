@@ -3,13 +3,16 @@ package table;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 
+import table.controllers.EmployeeEditController;
 import table.controllers.MainController;
+import table.Employee;
 
 import java.io.IOException;
 
@@ -70,5 +73,31 @@ public class TableMainApp extends Application {
 
     public Stage getPrimaryStage(){
         return primaryStage;
+    }
+
+    public boolean showEmployeeEditDialog(Employee employee) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(TableMainApp.class.getResource("fxml/EmployeeDialog.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Edit Employee");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            EmployeeEditController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setEmployee(employee);
+
+            dialogStage.showAndWait();
+
+            return controller.isOkClicked();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
