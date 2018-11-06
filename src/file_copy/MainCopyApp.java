@@ -2,6 +2,7 @@ package file_copy;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import table.controllers.MainController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -46,7 +47,7 @@ public class MainCopyApp extends Application {
             loader.setLocation(MainCopyApp.class.getResource("fxml/FileDialog.fxml"));
             AnchorPane sceneOverview = loader.load();
             this.rootLayout.setCenter(sceneOverview);
-            MainCopyApp mainController = loader.getController();
+            MainController mainController = loader.getController();
             mainController.setMainCopyApp(this);
         } catch (IOException except) {
             except.printStackTrace();
