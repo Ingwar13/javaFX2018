@@ -47,7 +47,7 @@ public class MainCopyApp extends Application {
             loader.setLocation(MainCopyApp.class.getResource("fxml/FileDialog.fxml"));
             AnchorPane sceneOverview = loader.load();
             this.rootLayout.setCenter(sceneOverview);
-            MainController mainController = loader.getController();
+            CopyController mainController = loader.getController();
             mainController.setMainCopyApp(this);
         } catch (IOException except) {
             except.printStackTrace();
