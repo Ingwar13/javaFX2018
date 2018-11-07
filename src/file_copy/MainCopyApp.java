@@ -1,6 +1,7 @@
 package file_copy;
 
 import javafx.application.Application;
+import javafx.scene.control.ProgressBar;
 import javafx.stage.Stage;
 import table.controllers.MainController;
 import javafx.fxml.FXMLLoader;
@@ -49,6 +50,7 @@ public class MainCopyApp extends Application {
             this.rootLayout.setCenter(sceneOverview);
             CopyController mainController = loader.getController();
             mainController.setMainCopyApp(this);
+            mainController.getProgressBar().setVisible(true);
         } catch (IOException except) {
             except.printStackTrace();
         }
