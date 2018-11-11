@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="word_repeat_count.TextController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="word_repeat_count.TextController">
    <children>
       <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleChooseFile" prefHeight="47.0" prefWidth="161.0" text="Choose file for analysis" />
       <Label fx:id="chooseFileLabel" layoutX="190.0" layoutY="29.0" prefHeight="17.0" prefWidth="390.0" text="Label" />
@@ -15,8 +15,8 @@
       <Button layoutX="14.0" layoutY="132.0" mnemonicParsing="false" onAction="#handleProcess" prefHeight="47.0" prefWidth="161.0" text="Process file" />
       <TableView fx:id="wordTable" layoutX="190.0" layoutY="132.0" prefHeight="254.0" prefWidth="400.0">
         <columns>
-          <TableColumn fx:id="wordColumn" prefWidth="267.0" text="C1" />
-          <TableColumn fx:id="quantityColumn" prefWidth="125.0" text="C2" />
+          <TableColumn fx:id="wordColumn" prefWidth="267.0" text="Word" />
+          <TableColumn fx:id="quantityColumn" prefWidth="125.0" text="Count" />
         </columns>
       </TableView>
    </children>
