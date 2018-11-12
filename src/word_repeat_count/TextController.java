@@ -1,24 +1,19 @@
 package word_repeat_count;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.stream.Stream;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class TextController {
@@ -32,19 +27,26 @@ public class TextController {
     private Label exclusionsLabel;
 
     @FXML
-    private TableView<String> wordTable;
+    private TableView<WordData> wordTable;
 
     @FXML
-    private TableColumn<String,String> wordColumn;
+    private TableColumn<WordData,String> wordColumn;
 
     @FXML
-    private TableColumn<String,Integer> quantityColumn;
+    private TableColumn<WordData,String> quantityColumn;
 
-    private HashMap<String,Integer> wordMap;
+    private ObservableList<WordData> wordDataList = FXCollections.observableArrayList();
 
 
     public void setMainWordApp(MainWordApp maiWordApp){
         this.mainWordApp = maiWordApp;
+    }
+
+    public void initialize() {
+        wordColumn.setCellValueFactory(new PropertyValueFactory<>("Word"));
+        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("Count"));
+        chooseFileLabel.setText("No file");
+        exclusionsLabel.setText("No file");
     }
 
     @FXML
@@ -65,39 +67,38 @@ public class TextController {
 
     @FXML
     private void handleProcess(){
-    	File processFile = new File(chooseFileLabel.getText());
-    	File exlusionsFile = new File(exclusionsLabel.getText());
-    	Pattern pattern = Pattern.compile("[a-zA-Z]{3,}");
-    	
-    	FileReader reader;
+    	Pattern pattern = Pattern.compile("[a-zA-Z']{3,}");
+
     	String line;
 		try {
-			reader = new FileReader(chooseFileLabel.getText());
-			BufferedReader bufferedReader = new BufferedReader(reader);
+            ArrayList<String> exclusions = new ArrayList<>();
+		    if (exclusionsLabel.getText()!="No file") {
+                Files.lines(Paths.get(exclusionsLabel.getText()))
+                .forEach(a -> exclusions.add(a));
+		    }
+            wordDataList = FXCollections.observableArrayList();
+            HashMap<String,Integer> wordMap = new HashMap<>();
+            FileInputStream fileStream = new FileInputStream(chooseFileLabel.getText());
+			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileStream));
 			 while ((line = bufferedReader.readLine()) != null) {
-			     for (String word : line.split("[a-zA-Z]{3,}")) {
-			    	 wordMap.put(word, wordMap.get(word)!=null?wordMap.get(word)+1 : 1);
-			     }	     
-			    }
-			 reader.close();
-			 Iterator it = wordMap.entrySet().iterator();
-			    while (it.hasNext()) {
-			        Map.Entry pair = (Map.Entry)it.next();
-			        System.out.println(pair.getKey() + " = " + pair.getValue());
-			    }
+			     String[] words = line.toLowerCase().split(" ");
+			     for (String word : words) {
+			         if (pattern.matcher(word).matches() && !exclusions.contains(word)) {
+                         wordMap.put(word, wordMap.containsKey(word) ? wordMap.get(word) + 1 : 1);
+                     }
+			     }
+			 }
+           // Stream<Map.Entry<String,Integer>> sorted =
+            wordMap.entrySet().stream()
+                //.sorted(Map.Entry.comparingByValue())
+                .sorted((o1, o2) -> o2.getValue() - o1.getValue())
+                .forEach(a -> wordDataList.add(new WordData(a.getKey(),a.getValue().toString())));
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-        
-//    	try {
-//    		Files.lines(Paths.get(chooseFileLabel.getText()))
-//    		.forEach(a -> a.split("[a-zA-Z]{3,}"));			
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//    	//processFile.
+         wordTable.setItems(wordDataList);
     }
-
 }

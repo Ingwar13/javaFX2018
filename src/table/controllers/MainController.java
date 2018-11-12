@@ -39,9 +39,10 @@ public class MainController{
         salaryColumn.setCellValueFactory(cellData -> cellData.getValue().salaryProperty().asObject());
         showEmployeeDetails(null);
         employeeTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showEmployeeDetails(newValue));
+        //employeeTable.setItems(tableMainApp.getEmployeeData());
     }
 
-    public  void setTableMainApp(TableMainApp tableMainApp){
+    public void setTableMainApp(TableMainApp tableMainApp){
         this.tableMainApp = tableMainApp;
         employeeTable.setItems(tableMainApp.getEmployeeData());
     }
