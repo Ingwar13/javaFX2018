@@ -15,6 +15,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class TextController {
 
@@ -88,9 +90,16 @@ public class TextController {
                      }
 			     }
 			 }
+
+//            HashMap<String,Integer> wordMap =
+//                    Files.lines(Paths.get(chooseFileLabel.getText()))
+//                    .forEach(a -> () -> Stream.of(a.toLowerCase().split(" "))
+//                        .filter(b -> pattern.matcher(b).matches() && !exclusions.contains(b))
+//                        .collect(b -> Collectors.toMap(b, Collectors.counting()));
+                        //.forEach(b -> wordMap.put(b, wordMap.containsKey(b) ? wordMap.get(b) + 1 : 1)));
+
            // Stream<Map.Entry<String,Integer>> sorted =
             wordMap.entrySet().stream()
-                //.sorted(Map.Entry.comparingByValue())
                 .sorted((o1, o2) -> o2.getValue() - o1.getValue())
                 .forEach(a -> wordDataList.add(new WordData(a.getKey(),a.getValue().toString())));
 
